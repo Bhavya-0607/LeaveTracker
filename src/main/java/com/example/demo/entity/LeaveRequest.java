@@ -17,6 +17,9 @@ public class LeaveRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 
     @ManyToOne
     @JoinColumn(name = "leave_type_id") 
@@ -42,6 +45,20 @@ public class LeaveRequest {
     public void setStatus(LeaveStatus status) {
         this.status = status;
     }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    // Getter and Setter for status
+    public LeaveStatus getStatus() {
+        return status;
+    }
+
+   
 }
 
 

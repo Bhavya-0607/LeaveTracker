@@ -22,7 +22,7 @@ public class LeaveRequestService {
 
     // Retrieves leave requests for a specific user
     public List<LeaveRequest> getLeaveRequestsByUserId(Long userId) {
-        return leaveRequestRepository.findByUserId(userId);
+        return leaveRequestRepository.findByEmployee_Id(userId);
     }
 
     // Approves a leave request and returns the updated object

@@ -13,7 +13,7 @@ public class Shift {
 
     private String name; // e.g., "Morning Shift"
     private LocalTime startTime;
-    private String endTime;
+    private LocalTime endTime;
     private boolean isDefault;
     private String description;
     private String dayType;
@@ -22,7 +22,7 @@ public class Shift {
     public Shift() {}
 
     // All-args constructor
-    public Shift(Long id, String name, LocalTime startTime, String endTime, boolean isDefault, String description, String dayType) {
+    public Shift(Long id, String name, LocalTime startTime, LocalTime endTime, boolean isDefault, String description, String dayType) {
         this.id = id;
         this.name = name;
         this.startTime = startTime;
@@ -57,11 +57,11 @@ public class Shift {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public LocalTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
 
@@ -94,7 +94,7 @@ public class Shift {
         private Long id;
         private String name;
         private LocalTime startTime;
-        private String endTime;
+        private LocalTime endTime;
         private boolean isDefault;
         private String description;
         private String dayType;
@@ -114,7 +114,7 @@ public class Shift {
             return this;
         }
 
-        public Builder endTime(String endTime) {
+        public Builder endTime(LocalTime endTime) {
             this.endTime = endTime;
             return this;
         }

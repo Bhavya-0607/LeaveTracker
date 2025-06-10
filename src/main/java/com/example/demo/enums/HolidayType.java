@@ -4,5 +4,5 @@ public enum HolidayType {
     ONBOARDING,
     RESTRICTED,
     GENERAL,
-    OPTIONAL
+    OPTIONAL, GAZETTED
 }

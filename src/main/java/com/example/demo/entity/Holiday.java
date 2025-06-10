@@ -18,9 +18,9 @@ public class Holiday {
 
     private String name;
 
-    private LocalDate from;
+    private LocalDate fromDate;
 
-    private LocalDate to;
+    private LocalDate toDate;
 
     private String location;
 

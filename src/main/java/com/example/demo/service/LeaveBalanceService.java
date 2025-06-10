@@ -14,6 +14,10 @@ import java.util.stream.Collectors;
 public class LeaveBalanceService {
 
     private LeaveBalanceRepository leaveBalanceRepository;
+    public LeaveBalanceService(LeaveBalanceRepository leaveBalanceRepository) {
+        this.leaveBalanceRepository = leaveBalanceRepository;
+    }
+
 
     public List<LeaveBalanceDto> getBalancesByUser(Long userId) {
         return leaveBalanceRepository.findByEmployeeId(userId)

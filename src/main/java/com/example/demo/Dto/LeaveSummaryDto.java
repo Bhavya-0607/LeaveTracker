@@ -11,6 +11,22 @@ public class LeaveSummaryDto {
     private Integer absentDays;
     private int bookedLeaves;
     private int availableLeaves;
-    public void setBookedLeaves(int bookedLeaves) { this.bookedLeaves = bookedLeaves; }
-    public void setAvailableLeaves(int availableLeaves) { this.availableLeaves = availableLeaves; }
+   
+    // ✅ Add Getters
+    public int getBookedLeaves() {
+        return bookedLeaves;
+    }
+
+    public int getAvailableLeaves() {
+        return availableLeaves;
+    }
+
+    // ✅ Add Setters (optional, but needed in your service)
+    public void setBookedLeaves(int bookedLeaves) {
+        this.bookedLeaves = bookedLeaves;
+    }
+
+    public void setAvailableLeaves(int availableLeaves) {
+        this.availableLeaves = availableLeaves;
+    }
 }

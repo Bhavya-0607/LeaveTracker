@@ -13,12 +13,13 @@ import lombok.NoArgsConstructor;
 @Table(name = "shift_assignments")
 
 public class ShiftAssignment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	  @Id
+	    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	    private Long id;
 
-    @ManyToOne
-    private Employee employee;
+	    @ManyToOne
+	    @JoinColumn(name = "employee_id", nullable = false)
+	    private Employee employee;
 
     @ManyToOne
     private Shift shift;
@@ -30,6 +31,26 @@ public class ShiftAssignment {
 
     public Shift getShift() {
         return shift;
+    }
+    
+    private Long employeeId;
+
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+
+    public void setShift(Shift shift) {
+        this.shift = shift;
+    }
+
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
     }
 
 }

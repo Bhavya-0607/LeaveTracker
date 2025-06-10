@@ -57,6 +57,9 @@ public class Attendance {
     public void setDayType(DayType dayType) {
         this.dayType = dayType;
     }
+    public enum DayType {
+        REGULAR, HOLIDAY, WEEKEND
+    }
 
 
     
