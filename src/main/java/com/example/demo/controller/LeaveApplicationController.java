@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/leave-applications")
-@RequiredArgsConstructor
+
 public class LeaveApplicationController {
 
     private final LeaveApplicationService leaveApplicationService;

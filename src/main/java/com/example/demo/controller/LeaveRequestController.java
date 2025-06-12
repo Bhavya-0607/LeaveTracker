@@ -17,7 +17,7 @@ import com.example.demo.service.LeaveRequestService;
 
 @RestController
 @RequestMapping("/api/leaves")
-@RequiredArgsConstructor
+
 public class LeaveRequestController {
 	
 	

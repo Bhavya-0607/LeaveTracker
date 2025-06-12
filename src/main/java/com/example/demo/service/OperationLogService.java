@@ -3,7 +3,6 @@ package com.example.demo.service;
 import com.example.demo.Dto.OperationLogDTO;
 import com.example.demo.entity.OperationLog;
 import com.example.demo.repository.OperationLogRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +10,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class OperationLogService {
 
     private final OperationLogRepository repository;

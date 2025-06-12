@@ -1,39 +1,35 @@
 package com.example.demo.service;
 
 import com.example.demo.Dto.HolidayDTO;
-
 import com.example.demo.entity.Holiday;
 import com.example.demo.enums.HolidayType;
 import com.example.demo.repository.HolidayRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 public class HolidayService {
 
+    private static final Logger log = LoggerFactory.getLogger(HolidayService.class);
+
     private final HolidayRepository holidayRepository;
+
+    // Constructor injection 
     public HolidayService(HolidayRepository holidayRepository) {
         this.holidayRepository = holidayRepository;
     }
-    private static final Logger log = LoggerFactory.getLogger(HolidayService.class);
 
-
+    // Add a new holiday
     public HolidayDTO addHoliday(HolidayDTO dto) {
         Holiday holiday = new Holiday();
         holiday.setName(dto.getName());
@@ -49,28 +45,29 @@ public class HolidayService {
         return dto;
     }
 
+    // Fetch all holidays between two dates
     public List<HolidayDTO> getAllHolidays(LocalDate start, LocalDate end) {
         List<Holiday> holidays = holidayRepository.findByDateBetween(start, end);
         return holidays.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
+    // Delete holiday by ID
     public void deleteHoliday(Long id) {
         holidayRepository.deleteById(id);
     }
 
+    // Reprocess leave logic
     public void reprocessLeaveForHoliday(Long id) {
         Holiday holiday = holidayRepository.findById(id).orElseThrow(() -> new RuntimeException("Holiday not found"));
         if (holiday.isReprocessLeave()) {
-            // TODO: Add leave reprocessing logic here
             log.info("Reprocessing leaves for holiday: {}", holiday.getName());
         }
     }
 
+    // Import holidays from CSV
     public String importHolidays(MultipartFile file) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-            Iterable<CSVRecord> records = CSVFormat.DEFAULT
-                    .withFirstRecordAsHeader()
-                    .parse(reader);
+            Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
 
             for (CSVRecord record : records) {
                 Holiday holiday = new Holiday();
@@ -92,6 +89,7 @@ public class HolidayService {
         }
     }
 
+    // Export holidays to CSV
     public ByteArrayInputStream exportHolidays() {
         List<Holiday> holidays = holidayRepository.findAll();
 
@@ -121,17 +119,18 @@ public class HolidayService {
         }
     }
 
+    // Convert entity to DTO
     private HolidayDTO convertToDTO(Holiday holiday) {
-        return HolidayDTO.builder()
-                .name(holiday.getName())
-                .date(holiday.getDate())
-                .type(holiday.getType())
-                .description(holiday.getDescription())
-                .notifyViaFeeds(holiday.isNotifyViaFeeds())
-                .reprocessLeave(holiday.isReprocessLeave())
-                .reminderDaysBefore(holiday.getReminderDaysBefore())
-                .applicableFor(holiday.getApplicableFor())
-                .shiftBased(holiday.isShiftBased())
-                .build();
+        HolidayDTO dto = new HolidayDTO();
+        dto.setName(holiday.getName());
+        dto.setDate(holiday.getDate());
+        dto.setType(holiday.getType());
+        dto.setDescription(holiday.getDescription());
+        dto.setNotifyViaFeeds(holiday.isNotifyViaFeeds());
+        dto.setReprocessLeave(holiday.isReprocessLeave());
+        dto.setReminderDaysBefore(holiday.getReminderDaysBefore());
+        dto.setApplicableFor(holiday.getApplicableFor());
+        dto.setShiftBased(holiday.isShiftBased());
+        return dto;
     }
 }

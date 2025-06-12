@@ -3,14 +3,13 @@ package com.example.demo.service;
 import com.example.demo.Dto.LeaveBalanceDto;
 import com.example.demo.entity.LeaveBalance;
 import com.example.demo.repository.LeaveBalanceRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
+
 public class LeaveBalanceService {
 
     private LeaveBalanceRepository leaveBalanceRepository;

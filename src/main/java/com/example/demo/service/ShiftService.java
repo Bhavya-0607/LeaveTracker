@@ -13,23 +13,21 @@ import com.example.demo.entity.ShiftAssignment;
 import com.example.demo.repository.AttendanceRepository;
 import com.example.demo.repository.ShiftAssignmentRepository;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
+
 public class ShiftService {
 
     private final ShiftAssignmentRepository shiftAssignmentRepository;
     private final AttendanceRepository attendanceRepository;
-    public ShiftService(AttendanceRepository attendanceRepository,
-            ShiftAssignmentRepository shiftAssignmentRepository) {
-this.attendanceRepository = attendanceRepository;
+    public ShiftService(ShiftAssignmentRepository shiftAssignmentRepository,
+            AttendanceRepository attendanceRepository) {
 this.shiftAssignmentRepository = shiftAssignmentRepository;
+this.attendanceRepository = attendanceRepository;
 }
 
     // Get Shift Calendar data for a specific employee
     public List<ShiftCalendarDTO> getShiftCalendar(Long empId, LocalDate start, LocalDate end) {
-        List<ShiftAssignment> shifts = shiftAssignmentRepository.findByEmployeeIdAndDateBetween(empId, start, end);
+        List<ShiftAssignment> shifts = shiftAssignmentRepository.findByEmployee_IdAndDateBetween(empId, start, end);
         return shifts.stream().map(shift -> {
             ShiftCalendarDTO dto = new ShiftCalendarDTO();
             dto.setDate(shift.getDate());

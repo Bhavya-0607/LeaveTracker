@@ -2,22 +2,23 @@ package com.example.demo.controller;
 
 import com.example.demo.Dto.HolidayDTO;
 import com.example.demo.service.HolidayService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/holidays")
-@RequiredArgsConstructor
 public class HolidayController {
 
     private final HolidayService holidayService;
+
+    // Explicit constructor (no Lombok)
     public HolidayController(HolidayService holidayService) {
         this.holidayService = holidayService;
     }
@@ -51,7 +52,7 @@ public class HolidayController {
     }
 
     @GetMapping("/export")
-    public ResponseEntity<byte[]> exportHolidays() {
+    public ResponseEntity<byte[]> exportHolidays() throws IOException {
         ByteArrayInputStream stream = holidayService.exportHolidays();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=holidays.csv");

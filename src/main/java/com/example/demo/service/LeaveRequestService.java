@@ -6,6 +6,7 @@ import com.example.demo.repository.LeaveRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -53,10 +54,11 @@ public class LeaveRequestService {
         leaveRequest.setStatus(status);
         return leaveRequestRepository.save(leaveRequest);
     }
+
+    // ✅ Checks if the employee is currently on leave (today)
+    public boolean isEmployeeOnLeave(Long employeeId) {
+        LocalDate today = LocalDate.now();
+        return leaveRequestRepository.existsByEmployee_IdAndStartDateLessThanEqualAndEndDateGreaterThanEqualAndStatus(
+                employeeId, today, today, LeaveStatus.APPROVED);
+    }
 }
-
-
-
-
-
-

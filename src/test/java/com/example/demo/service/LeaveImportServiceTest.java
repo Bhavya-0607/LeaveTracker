@@ -36,7 +36,6 @@ public class LeaveImportServiceTest {
         assertEquals(2, result.getErrorMessages().size());
         assertTrue(result.getErrorMessages().get(0).contains("Invalid leave type"));
 
-        // Capture and assert what was saved
         ArgumentCaptor<LeaveImportLog> captor = ArgumentCaptor.forClass(LeaveImportLog.class);
         verify(mockRepository, times(1)).save(captor.capture());
 
@@ -51,13 +50,21 @@ public class LeaveImportServiceTest {
     }
 
     @Test
-    public void testImportLeaveData_Exception() throws IOException {
+    public void testImportLeaveData_Exception() {
         MultipartFile mockFile = mock(MultipartFile.class);
-        when(mockFile.getOriginalFilename()).thenThrow(new IOException("File read error"));
+        try {
+            when(mockFile.getOriginalFilename()).thenReturn("leaves.csv");
+        } catch (Exception e) {
+            fail("Mock setup failed");
+        }
 
-        Exception exception = assertThrows(RuntimeException.class, () ->
+        // Simulate exception from repository save
+        doThrow(new RuntimeException("DB Save Failed"))
+                .when(mockRepository).save(any(LeaveImportLog.class));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () ->
                 service.importLeaveData(mockFile, "admin@example.com"));
 
-        assertTrue(exception.getMessage().contains("File processing failed"));
+        assertEquals("File processing failed", exception.getMessage());
     }
 }

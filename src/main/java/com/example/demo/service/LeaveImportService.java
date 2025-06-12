@@ -3,24 +3,21 @@ package com.example.demo.service;
 import com.example.demo.Dto.BulkLeaveUploadResponseDTO;
 import com.example.demo.entity.LeaveImportLog;
 import com.example.demo.repository.LeaveImportLogRepository;
-import lombok.RequiredArgsConstructor;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 @Service
-@RequiredArgsConstructor
 public class LeaveImportService {
-	
-    private final LeaveImportLogRepository leaveImportLogRepository; // ✅ no manual = null, let Spring inject
+
+    private final LeaveImportLogRepository leaveImportLogRepository;
+
     public LeaveImportService(LeaveImportLogRepository leaveImportLogRepository) {
         this.leaveImportLogRepository = leaveImportLogRepository;
     }
+
     public BulkLeaveUploadResponseDTO importLeaveData(MultipartFile file, String importedBy) {
         int total = 0, success = 0, failed = 0;
         List<String> errorMessages = new ArrayList<>();
@@ -35,17 +32,16 @@ public class LeaveImportService {
             errorMessages.add("Row 3: Invalid leave type");
             errorMessages.add("Row 7: Missing employee ID");
 
-            LeaveImportLog log = LeaveImportLog.builder()
-                    .fileName(filename)
-                    .totalRows(total)
-                    .successCount(success)
-                    .failureCount(failed)
-                    .errorDetails(String.join("\n", errorMessages))
-                    .importedAt(LocalDateTime.now())
-                    .importedBy(importedBy)
-                    .build();
+            LeaveImportLog log = new LeaveImportLog();
+            log.setFileName(filename);
+            log.setTotalRows(total);
+            log.setSuccessCount(success);
+            log.setFailureCount(failed);
+            log.setErrorDetails(String.join("\n", errorMessages));
+            log.setImportedAt(LocalDateTime.now());
+            log.setImportedBy(importedBy);
 
-            leaveImportLogRepository.save(log); // ✅ correct usage
+            leaveImportLogRepository.save(log);
 
             return new BulkLeaveUploadResponseDTO(total, success, failed, errorMessages);
 

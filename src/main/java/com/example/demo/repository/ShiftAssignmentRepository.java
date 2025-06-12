@@ -1,10 +1,12 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.ShiftAssignment;
-import java.time.LocalDate;
-import java.util.List;
+import com.example.demo.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Repository for performing CRUD operations on ShiftAssignment entities.
@@ -13,12 +15,22 @@ import org.springframework.stereotype.Repository;
 public interface ShiftAssignmentRepository extends JpaRepository<ShiftAssignment, Long> {
 
     /**
-     * Fetches all shift assignments for a given employee within a specified date range.
+     * Fetch all shift assignments for a given employee ID within a specified date range.
      *
      * @param employeeId the ID of the employee
-     * @param start the start date of the range
-     * @param end the end date of the range
-     * @return a list of ShiftAssignment records
+     * @param start the start date
+     * @param end the end date
+     * @return list of ShiftAssignment entities
      */
     List<ShiftAssignment> findByEmployee_IdAndDateBetween(Long employeeId, LocalDate start, LocalDate end);
+
+    /**
+     * Optional: Fetch all shift assignments for a given Employee entity within a specified date range.
+     *
+     * @param employee the Employee entity
+     * @param start the start date
+     * @param end the end date
+     * @return list of ShiftAssignment entities
+     */
+    List<ShiftAssignment> findByEmployeeAndDateBetween(Employee employee, LocalDate start, LocalDate end);
 }

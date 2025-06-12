@@ -5,7 +5,7 @@ import com.example.demo.enums.HolidayType;
 import java.time.LocalDate;
 
 public class HolidayDTO {
-    private Long id;
+
     private String name;
     private LocalDate date;
     private HolidayType type;
@@ -16,11 +16,14 @@ public class HolidayDTO {
     private String applicableFor;
     private boolean shiftBased;
 
-    // ✅ Full-args constructor (used by builder)
-    public HolidayDTO(Long id, String name, LocalDate date, HolidayType type, String description,
+    // No-arg constructor
+    public HolidayDTO() {
+    }
+
+    // All-arg constructor (optional)
+    public HolidayDTO(String name, LocalDate date, HolidayType type, String description,
                       boolean notifyViaFeeds, boolean reprocessLeave, int reminderDaysBefore,
                       String applicableFor, boolean shiftBased) {
-        this.id = id;
         this.name = name;
         this.date = date;
         this.type = type;
@@ -32,88 +35,77 @@ public class HolidayDTO {
         this.shiftBased = shiftBased;
     }
 
-    // ✅ Getters
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public LocalDate getDate() { return date; }
-    public HolidayType getType() { return type; }
-    public String getDescription() { return description; }
-    public boolean isNotifyViaFeeds() { return notifyViaFeeds; }
-    public boolean isReprocessLeave() { return reprocessLeave; }
-    public int getReminderDaysBefore() { return reminderDaysBefore; }
-    public String getApplicableFor() { return applicableFor; }
-    public boolean isShiftBased() { return shiftBased; }
+    // Getters and Setters
 
-    // ✅ Manual Builder Pattern
-    public static Builder builder() {
-        return new Builder();
+    public String getName() {
+        return name;
     }
 
-    public static class Builder {
-        private Long id;
-        private String name;
-        private LocalDate date;
-        private HolidayType type;
-        private String description;
-        private boolean notifyViaFeeds;
-        private boolean reprocessLeave;
-        private int reminderDaysBefore;
-        private String applicableFor;
-        private boolean shiftBased;
+    public void setName(String name) {
+        this.name = name;
+    }
 
-        public Builder id(Long id) {
-            this.id = id;
-            return this;
-        }
+    public LocalDate getDate() {
+        return date;
+    }
 
-        public Builder name(String name) {
-            this.name = name;
-            return this;
-        }
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
-        public Builder date(LocalDate date) {
-            this.date = date;
-            return this;
-        }
+    public HolidayType getType() {
+        return type;
+    }
 
-        public Builder type(HolidayType type) {
-            this.type = type;
-            return this;
-        }
+    public void setType(HolidayType type) {
+        this.type = type;
+    }
 
-        public Builder description(String description) {
-            this.description = description;
-            return this;
-        }
+    public String getDescription() {
+        return description;
+    }
 
-        public Builder notifyViaFeeds(boolean notifyViaFeeds) {
-            this.notifyViaFeeds = notifyViaFeeds;
-            return this;
-        }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-        public Builder reprocessLeave(boolean reprocessLeave) {
-            this.reprocessLeave = reprocessLeave;
-            return this;
-        }
+    public boolean isNotifyViaFeeds() {
+        return notifyViaFeeds;
+    }
 
-        public Builder reminderDaysBefore(int reminderDaysBefore) {
-            this.reminderDaysBefore = reminderDaysBefore;
-            return this;
-        }
+    public void setNotifyViaFeeds(boolean notifyViaFeeds) {
+        this.notifyViaFeeds = notifyViaFeeds;
+    }
 
-        public Builder applicableFor(String applicableFor) {
-            this.applicableFor = applicableFor;
-            return this;
-        }
+    public boolean isReprocessLeave() {
+        return reprocessLeave;
+    }
 
-        public Builder shiftBased(boolean shiftBased) {
-            this.shiftBased = shiftBased;
-            return this;
-        }
+    public void setReprocessLeave(boolean reprocessLeave) {
+        this.reprocessLeave = reprocessLeave;
+    }
 
-        public HolidayDTO build() {
-            return new HolidayDTO(id, name, date, type, description, notifyViaFeeds, reprocessLeave,
-                                  reminderDaysBefore, applicableFor, shiftBased);
-        }
+    public int getReminderDaysBefore() {
+        return reminderDaysBefore;
+    }
+
+    public void setReminderDaysBefore(int reminderDaysBefore) {
+        this.reminderDaysBefore = reminderDaysBefore;
+    }
+
+    public String getApplicableFor() {
+        return applicableFor;
+    }
+
+    public void setApplicableFor(String applicableFor) {
+        this.applicableFor = applicableFor;
+    }
+
+    public boolean isShiftBased() {
+        return shiftBased;
+    }
+
+    public void setShiftBased(boolean shiftBased) {
+        this.shiftBased = shiftBased;
     }
 }

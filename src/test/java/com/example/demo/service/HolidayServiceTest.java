@@ -12,6 +12,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
 import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -30,17 +31,16 @@ class HolidayServiceTest {
 
     @Test
     void testAddHoliday() {
-        HolidayDTO dto = HolidayDTO.builder()
-                .name("New Year")
-                .date(LocalDate.of(2025, 1, 1))
-                .type(HolidayType.GAZETTED)
-                .description("New Year Celebration")
-                .notifyViaFeeds(true)
-                .reprocessLeave(false)
-                .reminderDaysBefore(2)
-                .applicableFor("All")
-                .shiftBased(false)
-                .build();
+        HolidayDTO dto = new HolidayDTO();
+        dto.setName("New Year");
+        dto.setDate(LocalDate.of(2025, 1, 1));
+        dto.setType(HolidayType.GAZETTED);
+        dto.setDescription("New Year Celebration");
+        dto.setNotifyViaFeeds(true);
+        dto.setReprocessLeave(false);
+        dto.setReminderDaysBefore(2);
+        dto.setApplicableFor("All");
+        dto.setShiftBased(false);
 
         Holiday savedHoliday = new Holiday();
         savedHoliday.setName(dto.getName());
@@ -62,7 +62,11 @@ class HolidayServiceTest {
 
         when(holidayRepository.findByDateBetween(any(), any())).thenReturn(Collections.singletonList(h1));
 
-        List<HolidayDTO> result = holidayService.getAllHolidays(LocalDate.of(2025, 1, 1), LocalDate.of(2025, 12, 31));
+        List<HolidayDTO> result = holidayService.getAllHolidays(
+                LocalDate.of(2025, 1, 1),
+                LocalDate.of(2025, 12, 31)
+        );
+
         assertEquals(1, result.size());
         assertEquals("Republic Day", result.get(0).getName());
     }

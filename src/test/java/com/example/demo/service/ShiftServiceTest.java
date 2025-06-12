@@ -28,7 +28,7 @@ public class ShiftServiceTest {
     public void setUp() {
         attendanceRepository = mock(AttendanceRepository.class);
         shiftAssignmentRepository = mock(ShiftAssignmentRepository.class);
-        shiftService = new ShiftService(attendanceRepository, shiftAssignmentRepository);
+        shiftService = new ShiftService(shiftAssignmentRepository, attendanceRepository);
     }
 
     @Test
@@ -45,12 +45,12 @@ public class ShiftServiceTest {
         ShiftAssignment assignment = new ShiftAssignment();
         assignment.setDate(LocalDate.of(2024, 6, 3));
         assignment.setShift(shift);
-        assignment.setEmployeeId(empId);
 
-        when(shiftAssignmentRepository.findByEmployeeIdAndDateBetween(empId, start, end))
+        when(shiftAssignmentRepository.findByEmployee_IdAndDateBetween(empId, start, end))
                 .thenReturn(Collections.singletonList(assignment));
 
         List<ShiftCalendarDTO> result = shiftService.getShiftCalendar(empId, start, end);
+
         assertEquals(1, result.size());
         assertEquals("Morning", result.get(0).getShiftName());
         assertEquals("09:00 - 17:00", result.get(0).getShiftTiming());
@@ -73,13 +73,14 @@ public class ShiftServiceTest {
                 .thenReturn(Collections.singletonList(attendance));
 
         List<AttendanceCalendarDTO> result = shiftService.getAttendanceCalendar(empId, start, end);
+
         assertEquals(1, result.size());
         assertTrue(result.get(0).isPresent());
         assertEquals("REGULAR", result.get(0).getShiftName());
     }
 
     @Test
-    public void testGetShiftCalendarData_ShouldReturnEmptyList() {
+    public void testGetShiftCalendarData_ReturnsEmptyList() {
         List<ShiftCalendarDTO> result = shiftService.getShiftCalendarData(LocalDate.now(), LocalDate.now().plusDays(1));
         assertTrue(result.isEmpty());
     }
