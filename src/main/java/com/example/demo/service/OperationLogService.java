@@ -6,6 +6,8 @@ import com.example.demo.repository.OperationLogRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 public class OperationLogService {
 
     private final OperationLogRepository repository;
+
     public OperationLogService(OperationLogRepository repository) {
         this.repository = repository;
     }
@@ -36,6 +39,20 @@ public class OperationLogService {
     public List<OperationLogDTO> getAllLogs() {
         return repository.findAll()
                 .stream().map(this::toDTO).collect(Collectors.toList());
+    }
+
+    /**
+     * ✅ New method to calculate total logged hours for the current week
+     */
+    public double getTotalLoggedHoursThisWeek(Long employeeId) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startOfWeek = now.with(java.time.DayOfWeek.MONDAY).truncatedTo(ChronoUnit.DAYS);
+
+        List<OperationLog> logs = repository.findByEmployeeIdAndTimestampBetween(employeeId, startOfWeek, now);
+
+        return logs.stream()
+                .mapToDouble(OperationLog::getDurationInHours) // assuming this field exists
+                .sum();
     }
 
     private OperationLogDTO toDTO(OperationLog entity) {

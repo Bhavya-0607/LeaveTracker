@@ -28,15 +28,19 @@ public class OperationLogServiceTest {
     public void testLogOperation() {
         OperationLogDTO dto = new OperationLogDTO();
         dto.setModuleName("Leave Tracker");
-        dto.setOperationType("CREATE");
+        dto.setOperation("CREATE");
         dto.setPerformedBy("bhavya");
+        dto.setEmployeeId(1001L);
+        dto.setDurationInHours(1.5);
         dto.setTimestamp(LocalDateTime.now());
 
         OperationLog entity = new OperationLog();
         entity.setId(1L);
         entity.setModuleName(dto.getModuleName());
-        entity.setOperationType(dto.getOperationType());
+        entity.setOperation(dto.getOperation());
         entity.setPerformedBy(dto.getPerformedBy());
+        entity.setEmployeeId(dto.getEmployeeId());
+        entity.setDurationInHours(dto.getDurationInHours());
         entity.setTimestamp(dto.getTimestamp());
 
         when(repository.save(any(OperationLog.class))).thenReturn(entity);
@@ -45,8 +49,10 @@ public class OperationLogServiceTest {
 
         assertNotNull(saved);
         assertEquals("Leave Tracker", saved.getModuleName());
-        assertEquals("CREATE", saved.getOperationType());
+        assertEquals("CREATE", saved.getOperation());
         assertEquals("bhavya", saved.getPerformedBy());
+        assertEquals(1.5, saved.getDurationInHours());
+        assertEquals(1001L, saved.getEmployeeId());
     }
 
     @Test
@@ -54,8 +60,10 @@ public class OperationLogServiceTest {
         OperationLog log1 = new OperationLog();
         log1.setId(1L);
         log1.setModuleName("Leave Tracker");
-        log1.setOperationType("UPDATE");
+        log1.setOperation("UPDATE");
         log1.setPerformedBy("bhavya");
+        log1.setEmployeeId(1001L);
+        log1.setDurationInHours(2.0);
         log1.setTimestamp(LocalDateTime.now());
 
         when(repository.findByModuleNameOrderByTimestampDesc("Leave Tracker"))
@@ -64,7 +72,9 @@ public class OperationLogServiceTest {
         List<OperationLogDTO> logs = service.getLogsByModule("Leave Tracker");
 
         assertEquals(1, logs.size());
-        assertEquals("UPDATE", logs.get(0).getOperationType());
+        assertEquals("UPDATE", logs.get(0).getOperation());
+        assertEquals("bhavya", logs.get(0).getPerformedBy());
+        assertEquals(1001L, logs.get(0).getEmployeeId());
     }
 
     @Test
@@ -72,8 +82,10 @@ public class OperationLogServiceTest {
         OperationLog log1 = new OperationLog();
         log1.setId(1L);
         log1.setModuleName("Leave Tracker");
-        log1.setOperationType("DELETE");
+        log1.setOperation("DELETE");
         log1.setPerformedBy("bhavya");
+        log1.setEmployeeId(1001L);
+        log1.setDurationInHours(0.75);
         log1.setTimestamp(LocalDateTime.now());
 
         when(repository.findByPerformedByOrderByTimestampDesc("bhavya"))
@@ -82,6 +94,7 @@ public class OperationLogServiceTest {
         List<OperationLogDTO> logs = service.getLogsByUser("bhavya");
 
         assertEquals(1, logs.size());
-        assertEquals("DELETE", logs.get(0).getOperationType());
+        assertEquals("DELETE", logs.get(0).getOperation());
+        assertEquals(0.75, logs.get(0).getDurationInHours());
     }
 }

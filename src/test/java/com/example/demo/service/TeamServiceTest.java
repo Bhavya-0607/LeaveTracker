@@ -17,7 +17,7 @@ public class TeamServiceTest {
     private EmployeeRepository employeeRepository;
     private ProjectAssignmentService projectAssignmentService;
     private LeaveRequestService leaveRequestService;
-    private TimeLogService timeLogService;
+    private OperationLogService operationLogService; // Renamed to be consistent
     private TeamService teamService;
 
     @BeforeEach
@@ -25,13 +25,13 @@ public class TeamServiceTest {
         employeeRepository = mock(EmployeeRepository.class);
         projectAssignmentService = mock(ProjectAssignmentService.class);
         leaveRequestService = mock(LeaveRequestService.class);
-        timeLogService = mock(TimeLogService.class);
+        operationLogService = mock(OperationLogService.class); // ✅ mock the instance
 
-        teamService = new TeamServiceImpl(
+        teamService = new TeamService(
                 employeeRepository,
                 projectAssignmentService,
                 leaveRequestService,
-                timeLogService
+                operationLogService
         );
     }
 
@@ -41,12 +41,12 @@ public class TeamServiceTest {
         Employee emp1 = new Employee();
         emp1.setId(1L);
         emp1.setName("Alice");
-        emp1.setStatus("Active"); // ✅ fixed
+        emp1.setStatus("Active");
 
         Employee emp2 = new Employee();
         emp2.setId(2L);
         emp2.setName("Bob");
-        emp2.setStatus("Inactive"); // ✅ fixed
+        emp2.setStatus("Inactive");
 
         when(employeeRepository.findByManagerId(101L)).thenReturn(Arrays.asList(emp1, emp2));
 
@@ -56,8 +56,8 @@ public class TeamServiceTest {
         when(leaveRequestService.isEmployeeOnLeave(1L)).thenReturn(false);
         when(leaveRequestService.isEmployeeOnLeave(2L)).thenReturn(true);
 
-        when(timeLogService.getTotalLoggedHoursThisWeek(1L)).thenReturn(38.5);
-        when(timeLogService.getTotalLoggedHoursThisWeek(2L)).thenReturn(25.0);
+        when(operationLogService.getTotalLoggedHoursThisWeek(1L)).thenReturn(38.5); // ✅ correct non-static mock
+        when(operationLogService.getTotalLoggedHoursThisWeek(2L)).thenReturn(25.0); // ✅ correct non-static mock
 
         // Act
         List<TeamMemberSummaryDTO> result = teamService.getTeamMembersByManagerId(101L);
@@ -71,7 +71,7 @@ public class TeamServiceTest {
         assertEquals("Project A", alice.getCurrentJob());
         assertFalse(alice.isOnLeave());
         assertEquals(38.5, alice.getWeeklyLoggedHours());
-        assertEquals("Active", alice.getStatus()); // ✅ fixed
+        assertEquals("Active", alice.getStatus());
 
         TeamMemberSummaryDTO bob = result.get(1);
         assertEquals(2L, bob.getEmployeeId());
@@ -79,6 +79,6 @@ public class TeamServiceTest {
         assertEquals("Unassigned", bob.getCurrentJob());
         assertTrue(bob.isOnLeave());
         assertEquals(25.0, bob.getWeeklyLoggedHours());
-        assertEquals("Inactive", bob.getStatus()); // ✅ fixed
+        assertEquals("Inactive", bob.getStatus());
     }
 }
