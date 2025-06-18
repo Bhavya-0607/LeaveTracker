@@ -49,4 +49,10 @@ public class LeaveImportService {
             throw new RuntimeException("File processing failed", e);
         }
     }
+    public byte[] getSampleTemplate() {
+        // Dummy implementation: replace with actual XLSX file content if needed
+        String dummyTemplate = "Employee ID,Leave Type,From Date,To Date,Reason,Hours Taken\n";
+        return dummyTemplate.getBytes();
+    }
+
 }

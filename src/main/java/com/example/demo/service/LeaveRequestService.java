@@ -17,6 +17,17 @@ public class LeaveRequestService {
 
     // Saves or applies a new leave request
     public LeaveRequest applyLeave(LeaveRequest leaveRequest) {
+        // 🟡 Log before saving
+        System.out.println("===== DEBUG: Applying Leave Request =====");
+        System.out.println("Employee ID: " + 
+            (leaveRequest.getEmployee() != null ? leaveRequest.getEmployee().getId() : "null"));
+        System.out.println("Leave Type ID: " + 
+            (leaveRequest.getLeaveType() != null ? leaveRequest.getLeaveType().getId() : "null"));
+        System.out.println("Start Date: " + leaveRequest.getStartDate());
+        System.out.println("End Date: " + leaveRequest.getEndDate());
+        System.out.println("Reason: " + leaveRequest.getReason());
+        System.out.println("=========================================");
+
         leaveRequest.setStatus(LeaveStatus.PENDING); // default status
         return leaveRequestRepository.save(leaveRequest);
     }

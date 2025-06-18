@@ -1,11 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.Dto.LeaveBalanceDto;
+import com.example.demo.service.LeaveBalanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.example.demo.Dto.LeaveBalanceDto;
-import com.example.demo.service.LeaveBalanceService;
 
 import java.util.List;
 
@@ -16,7 +15,10 @@ public class LeaveBalanceController {
     @Autowired
     private LeaveBalanceService leaveBalanceService;
 
-    // Create or update a leave balance
+    /**
+     * Create or update a leave balance.
+     * `totalLeaves` is auto-calculated as (bookedLeaves + availableLeaves)
+     */
     @PostMapping
     public ResponseEntity<LeaveBalanceDto> createOrUpdateLeaveBalance(@RequestBody LeaveBalanceDto leaveBalanceDto) {
         LeaveBalanceDto savedDto = leaveBalanceService.createOrUpdateLeaveBalance(leaveBalanceDto);
@@ -42,5 +44,3 @@ public class LeaveBalanceController {
         return ResponseEntity.noContent().build();
     }
 }
-
-

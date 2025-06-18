@@ -21,7 +21,7 @@ public class LeaveBalance {
     private LeaveType leaveType;
 
     @Column(name = "total_leaves", nullable = false)
-    private Double totalLeaves;
+    private Integer totalLeaves;
 
     @Column(name = "used_leaves", nullable = false)
     private Double bookedLeaves;
@@ -72,11 +72,11 @@ public class LeaveBalance {
         this.leaveType = leaveType;
     }
 
-    public Double getTotalLeaves() {
+    public Integer getTotalLeaves() {
         return totalLeaves;
     }
 
-    public void setTotalLeaves(Double totalLeaves) {
+    public void setTotalLeaves(	Integer totalLeaves) {
         this.totalLeaves = totalLeaves;
     }
 

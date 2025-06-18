@@ -1,32 +1,24 @@
-
 package com.example.demo.controller;
 
 import com.example.demo.entity.LeaveRequest;
 import com.example.demo.enums.LeaveStatus;
-import com.example.demo.service.LeaveImportService;
 import com.example.demo.service.LeaveRequestService;
 
-import lombok.RequiredArgsConstructor;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import com.example.demo.service.LeaveRequestService;
 
 @RestController
 @RequestMapping("/api/leaves")
-
 public class LeaveRequestController {
-	
-	
 
-	private LeaveRequestService leaveRequestService;
+    private final LeaveRequestService leaveRequestService;
 
-
-
-    
+    // ✅ Constructor Injection (to avoid null)
+    public LeaveRequestController(LeaveRequestService leaveRequestService) {
+        this.leaveRequestService = leaveRequestService;
+    }
 
     // POST: Apply for leave
     @PostMapping("/apply")

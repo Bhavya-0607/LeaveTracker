@@ -13,20 +13,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-
 public class LeaveApplicationService {
 
     private final LeaveApplicationRepository leaveApplicationRepository;
     private final EmployeeRepository employeeRepository;
-    public LeaveApplicationService(LeaveApplicationRepository leaveApplicationRepository,
-            EmployeeRepository employeeRepository) {
-this.leaveApplicationRepository = leaveApplicationRepository;
-this.employeeRepository = employeeRepository;
-}
 
+    public LeaveApplicationService(LeaveApplicationRepository leaveApplicationRepository,
+                                   EmployeeRepository employeeRepository) {
+        this.leaveApplicationRepository = leaveApplicationRepository;
+        this.employeeRepository = employeeRepository;
+    }
 
     public LeaveApplicationDTO applyLeave(LeaveApplicationDTO dto) {
-        Employee employee = employeeRepository.findById(dto.getEmployeeId()).orElseThrow();
+        Employee employee = employeeRepository.findById(dto.getEmployeeId())
+                .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + dto.getEmployeeId()));
 
         LeaveApplication leave = LeaveApplication.builder()
                 .leaveType(dto.getLeaveType())
@@ -54,7 +54,8 @@ this.employeeRepository = employeeRepository;
     }
 
     public LeaveApplicationDTO getById(Long id) {
-        LeaveApplication l = leaveApplicationRepository.findById(id).orElseThrow();
+        LeaveApplication l = leaveApplicationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Leave application not found with ID: " + id));
         return convertToDTO(l);
     }
 
@@ -62,7 +63,6 @@ this.employeeRepository = employeeRepository;
         leaveApplicationRepository.deleteById(id);
     }
 
-    // ✅ New Method: Convert Entity to DTO
     private LeaveApplicationDTO convertToDTO(LeaveApplication l) {
         LeaveApplicationDTO dto = new LeaveApplicationDTO();
         dto.setId(l.getId());
@@ -78,7 +78,6 @@ this.employeeRepository = employeeRepository;
         return dto;
     }
 
-    // ✅ New Method: Filter Leaves
     public List<LeaveApplicationDTO> filterLeaves(LeaveFilterDTO filterDTO) {
         return leaveApplicationRepository.findAll()
                 .stream()
@@ -92,7 +91,6 @@ this.employeeRepository = employeeRepository;
                 .collect(Collectors.toList());
     }
 
-    // ✅ New Method: Get Leave Summary
     public LeaveSummaryDto getLeaveSummary(Long employeeId) {
         List<LeaveApplication> applications = leaveApplicationRepository.findAll()
                 .stream()
@@ -100,8 +98,8 @@ this.employeeRepository = employeeRepository;
                 .collect(Collectors.toList());
 
         LeaveSummaryDto summary = new LeaveSummaryDto();
-        summary.setBookedLeaves(applications.size()); 
-        summary.setAvailableLeaves(20 - applications.size()); 
+        summary.setBookedLeaves(applications.size());
+        summary.setAvailableLeaves(20 - applications.size());
 
         return summary;
     }

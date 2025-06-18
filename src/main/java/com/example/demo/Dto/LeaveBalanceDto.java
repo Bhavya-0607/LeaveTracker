@@ -9,18 +9,20 @@ public class LeaveBalanceDto {
     private LeaveType leaveType;
     private Double availableLeaves;
     private Double bookedLeaves;
+    private Integer totalLeaves; // ✅ Added field
 
     // Default constructor
     public LeaveBalanceDto() {}
 
     // Parameterized constructor
     public LeaveBalanceDto(Long id, Long employeeId, LeaveType leaveType,
-                           Double availableLeaves, Double bookedLeaves) {
+                           Double availableLeaves, Double bookedLeaves, Integer totalLeaves) {
         this.id = id;
         this.employeeId = employeeId;
         this.leaveType = leaveType;
         this.availableLeaves = availableLeaves;
         this.bookedLeaves = bookedLeaves;
+        this.totalLeaves = totalLeaves;
     }
 
     // Getters and Setters
@@ -64,7 +66,14 @@ public class LeaveBalanceDto {
         this.bookedLeaves = bookedLeaves;
     }
 
-    // For debugging/logging
+    public Integer getTotalLeaves() {
+        return totalLeaves;
+    }
+
+    public void setTotalLeaves(Integer totalLeaves) {
+        this.totalLeaves = totalLeaves;
+    }
+
     @Override
     public String toString() {
         return "LeaveBalanceDto{" +
@@ -73,6 +82,7 @@ public class LeaveBalanceDto {
                 ", leaveType=" + leaveType +
                 ", availableLeaves=" + availableLeaves +
                 ", bookedLeaves=" + bookedLeaves +
+                ", totalLeaves=" + totalLeaves +
                 '}';
     }
 
@@ -87,6 +97,7 @@ public class LeaveBalanceDto {
         private LeaveType leaveType;
         private Double availableLeaves;
         private Double bookedLeaves;
+        private Integer totalLeaves;
 
         public Builder id(Long id) {
             this.id = id;
@@ -113,8 +124,13 @@ public class LeaveBalanceDto {
             return this;
         }
 
+        public Builder totalLeaves(Integer totalLeaves) {
+            this.totalLeaves = totalLeaves;
+            return this;
+        }
+
         public LeaveBalanceDto build() {
-            return new LeaveBalanceDto(id, employeeId, leaveType, availableLeaves, bookedLeaves);
+            return new LeaveBalanceDto(id, employeeId, leaveType, availableLeaves, bookedLeaves, totalLeaves);
         }
     }
 }
