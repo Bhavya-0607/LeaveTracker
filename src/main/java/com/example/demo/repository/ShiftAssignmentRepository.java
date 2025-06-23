@@ -33,4 +33,14 @@ public interface ShiftAssignmentRepository extends JpaRepository<ShiftAssignment
      * @return list of ShiftAssignment entities
      */
     List<ShiftAssignment> findByEmployeeAndDateBetween(Employee employee, LocalDate start, LocalDate end);
+
+    /**
+     * Fetch all assignments between two dates (for all employees).
+     */
+    List<ShiftAssignment> findByDateBetween(LocalDate from, LocalDate to);
+
+    /**
+     * ✅ Check if a shift assignment already exists for a specific employee on a given date.
+     */
+    boolean existsByEmployee_IdAndDate(Long employeeId, LocalDate date);
 }

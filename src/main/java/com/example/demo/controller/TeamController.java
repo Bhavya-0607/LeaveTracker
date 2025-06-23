@@ -21,4 +21,10 @@ public class TeamController {
     public List<TeamMemberSummaryDTO> getTeamSummary(@PathVariable Long managerId) {
         return teamService.getTeamMembersByManagerId(managerId);
     }
+    @PostMapping("/member")
+    public String saveTeamMember(@RequestBody TeamMemberSummaryDTO memberDto) {
+        // TODO: You can call service to save the data if needed
+        System.out.println("Received team member: " + memberDto);
+        return "Team member data received successfully!";
+    }
 }
